@@ -110,6 +110,6 @@ export function WebsiteEditor() {
       {modal==='published'&&<><DialogTitle>Your website is published</DialogTitle><DialogDescription>This public snapshot is ready to share. The editor app itself is not yet deployed.</DialogDescription><Input readOnly value={publishedUrl} aria-label="Published website link"/><Button onClick={()=>{navigator.clipboard.writeText(publishedUrl).then(()=>toast.success('Link copied.')).catch(()=>toast.error('Could not copy the link.'));}}><Link2/>Copy link</Button><Button asChild variant="outline"><a href={publishedUrl} target="_blank" rel="noreferrer">Open website<ExternalLink/></a></Button></>}
       {modal==='sites'&&<><DialogTitle>Your websites</DialogTitle><DialogDescription>Personal workspace</DialogDescription><Button className="website-tile" variant="outline" onClick={()=>setModal(null)}><div className="site-avatar">f.</div><span>{siteName}</span><ArrowUpRight/></Button></>}
       {modal==='help'&&<><DialogTitle>A little help, when you need it</DialogTitle><DialogDescription>Select a page, then click any heading or paragraph to edit. Replace a photo with the image button. Save your changes before leaving, and publish when you’re ready to share.</DialogDescription><Button onClick={()=>setModal(null)}>Back to your website</Button></>}
-    </Dialog>
+    </DialogContent></Dialog>
   </div>;
 }
