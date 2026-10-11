@@ -14,7 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cms_published: {
+        Row: {
+          id: string
+          name: string
+          owner_id: string
+          pages: Json
+          published_at: string
+        }
+        Insert: {
+          id: string
+          name: string
+          owner_id: string
+          pages?: Json
+          published_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          owner_id?: string
+          pages?: Json
+          published_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_published_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "cms_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_sites: {
+        Row: {
+          id: string
+          name: string
+          owner_id: string
+          pages: Json
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name?: string
+          owner_id: string
+          pages?: Json
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          owner_id?: string
+          pages?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

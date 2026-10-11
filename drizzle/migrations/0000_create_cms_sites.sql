@@ -1,0 +1,14 @@
+CREATE TABLE public.cms_sites (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), owner_id uuid NOT NULL UNIQUE, name text NOT NULL DEFAULT 'Forma Studio', pages jsonb NOT NULL DEFAULT '[]', updated_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.cms_sites TO authenticated;
+GRANT ALL ON public.cms_sites TO service_role;
+ALTER TABLE public.cms_sites ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Owners manage their websites" ON public.cms_sites FOR ALL TO authenticated USING (owner_id = auth.uid()) WITH CHECK (owner_id = auth.uid());
+CREATE TABLE public.cms_published (id uuid PRIMARY KEY REFERENCES public.cms_sites(id) ON DELETE CASCADE, owner_id uuid NOT NULL, name text NOT NULL, pages jsonb NOT NULL DEFAULT '[]', published_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT ON public.cms_published TO anon;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.cms_published TO authenticated;
+GRANT ALL ON public.cms_published TO service_role;
+ALTER TABLE public.cms_published ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone reads published websites" ON public.cms_published FOR SELECT TO anon, authenticated USING (true);
+CREATE POLICY "Owners insert publication" ON public.cms_published FOR INSERT TO authenticated WITH CHECK (owner_id = auth.uid() AND EXISTS (SELECT 1 FROM public.cms_sites s WHERE s.id = cms_published.id AND s.owner_id = auth.uid()));
+CREATE POLICY "Owners update publication" ON public.cms_published FOR UPDATE TO authenticated USING (owner_id = auth.uid()) WITH CHECK (owner_id = auth.uid());
+CREATE POLICY "Owners delete publication" ON public.cms_published FOR DELETE TO authenticated USING (owner_id = auth.uid());
