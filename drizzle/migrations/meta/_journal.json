@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791717461558,
+      "tag": "0000_create_cms_sites",
+      "breakpoints": true
+    }
+  ]
+}
