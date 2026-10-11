@@ -11,7 +11,7 @@ import { lovable } from '@/integrations/lovable';
 import type { Json } from '@/integrations/supabase/types';
 
 export function WebsiteEditor() {
-  const [pages, setPages] = useState(initialPages);
+  const [pages, setPages] = useState<SitePage[]>(initialPages);
   const [selected, setSelected] = useState('home');
   const [device, setDevice] = useState('desktop');
   const [preview, setPreview] = useState(false);
@@ -43,7 +43,7 @@ export function WebsiteEditor() {
       const { data, error } = await supabase.from('cms_sites').select('*').eq('owner_id', id).maybeSingle();
       if (!active) return;
       if (error) { toast.error('Your saved site could not be loaded.'); return; }
-      if (data) { const loaded = parsePages(data.pages); if(loaded.length) { setPages(loaded); setSelected(loaded[0].id); } setSiteName(data.name); setSiteId(data.id); setStatus('All changes saved'); }
+      if (data) { const loaded = parsePages(data.pages); const first = loaded[0]; if(first) { setPages(loaded); setSelected(first.id); } setSiteName(data.name); setSiteId(data.id); setStatus('All changes saved'); }
     };
     supabase.auth.getSession().then(({ data }) => load(data.session?.user.id ?? null));
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => { if(event === 'SIGNED_IN') { load(session?.user.id ?? null); setModal(null); } if(event === 'SIGNED_OUT') { setUserId(null); setSiteId(null); setStatus('Draft'); } });
