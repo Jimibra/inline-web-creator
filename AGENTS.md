@@ -14,3 +14,4 @@
 - Store private site documents with owner-scoped RLS and publish into a separate public snapshot table, so unpublished changes remain private.
 - Use browser Cloud queries for owner-authenticated edits and a public server function for published reads, so SSR never depends on browser sessions.
 - Keep business page records inside the site document and page switching inside the canvas, so editing one website does not navigate away from the workspace.
+- Scope client website typography and interaction colors to `.business-site`, so workspace branding changes do not alter editable or published website presentation; editing outlines use the workspace ring token.
