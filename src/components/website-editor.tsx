@@ -9,6 +9,7 @@ import { initialPages, parsePages, type SitePage } from '@/lib/cms-model';
 import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable';
 import type { Json } from '@/integrations/supabase/types';
+import hexLogo from '@/assets/hex-logo.png.asset.json';
 
 export function WebsiteEditor() {
   const [pages, setPages] = useState<SitePage[]>(initialPages);
@@ -80,7 +81,7 @@ export function WebsiteEditor() {
 
   return <div className={`editor-shell ${preview ? 'preview-mode' : ''}`}>
     <header className="workspace-header">
-      <div className="workspace-brand"><span className="brand-mark"><Layers size={19}/></span><span className="brand-name">folio<span className="brand-period">.</span></span><span className="header-divider"/><Button variant="ghost" className="site-switch" onClick={()=>setModal('settings')}>{siteName}<ChevronDown size={13}/></Button><span className="workspace-badge">Website</span></div>
+      <div className="workspace-brand"><img className="hex-logo" src={hexLogo.url} alt="Hex" width={142} height={64}/><span className="header-divider"/><Button variant="ghost" className="site-switch" onClick={()=>setModal('settings')}>{siteName}<ChevronDown size={13}/></Button><span className="workspace-badge">Website</span></div>
       <div className="device-switcher">{[{id:'desktop',icon:Monitor,label:'Desktop'},{id:'tablet',icon:Tablet,label:'Tablet'},{id:'mobile',icon:Smartphone,label:'Mobile'}].map(({id,icon:Icon,label})=><Button key={id} size="icon" variant="ghost" title={label} aria-label={label} className={device===id?'device-active':''} onClick={()=>setDevice(id)}><Icon/></Button>)}</div>
       <div className="header-actions"><Button variant="ghost" className="save-status" onClick={()=>save()} disabled={busy}>{busy?<Loader2 className="animate-spin"/>:<Check/>}<span>{status}</span></Button><Button variant="ghost" onClick={()=>setPreview(!preview)}><Eye/><span>{preview?'Back to editor':'Preview'}</span></Button><Button className="publish-button" onClick={()=>setModal('publish')}><span>Publish</span><ArrowUpRight/></Button></div>
     </header>
@@ -97,7 +98,7 @@ export function WebsiteEditor() {
       </aside>}
       <main className="canvas-workspace">
         <div className="canvas-toolbar"><div className="canvas-breadcrumb"><span>Pages</span><span>/</span><strong>{page.name}</strong><span className="draft-tag">Draft</span></div><div className="canvas-tools">{!preview&&<><Button variant="ghost" size="icon" aria-label="Undo" title="Undo" disabled={!history.length} onClick={undo}><Undo2/></Button><Button variant="ghost" size="icon" aria-label="Redo" title="Redo" disabled={!future.length} onClick={redo}><Redo2/></Button><span className="toolbar-divider"/></>}<span className="canvas-size">{device==='desktop'?'Desktop':device==='tablet'?'768 px':'390 px'}</span><Button variant="ghost" size="icon" aria-label="Page settings" title="Page settings" onClick={()=>{setNewName(page.name);setModal('page-settings');}}><MoreHorizontal/></Button></div></div>
-        <div className="canvas-scroll"><div className={`canvas-frame device-${device}`}><div className="browser-bar"><div className="browser-dots"><i/><i/><i/></div><div className="browser-address"><Globe size={11}/><span>formastudio.example{page.slug?`/${page.slug}`:''}</span></div><ArrowUpRight size={12}/></div><SiteCanvas key={page.id} page={page} pages={pages} siteName={siteName} editing={!preview} onSelect={setSelected} onEdit={edit} onMedia={replaceMedia} onFocus={setFocus}/></div><div className="canvas-bottom-mark"><span className="small-brand-mark"><Layers size={12}/></span> Made with folio</div></div>
+        <div className="canvas-scroll"><div className={`canvas-frame device-${device}`}><div className="browser-bar"><div className="browser-dots"><i/><i/><i/></div><div className="browser-address"><Globe size={11}/><span>formastudio.example{page.slug?`/${page.slug}`:''}</span></div><ArrowUpRight size={12}/></div><SiteCanvas key={page.id} page={page} pages={pages} siteName={siteName} editing={!preview} onSelect={setSelected} onEdit={edit} onMedia={replaceMedia} onFocus={setFocus}/></div><div className="canvas-bottom-mark"><span className="small-brand-mark"><Layers size={12}/></span> Made with Hex</div></div>
         <footer className="workspace-footer"><div><span className="edit-mode-dot"/>{preview?'Preview mode':'Editing mode'}<span className="footer-divider">|</span><MousePointer2 size={12}/><span>{focus}</span></div><div><span className="footer-save">{status}</span><span className="footer-divider">|</span><Globe size={12}/>EN</div></footer>
       </main>
     </div>
